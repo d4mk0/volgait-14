@@ -1,0 +1,19 @@
+%h1 New draft
+
+= form_for @question, url: create_draft_questions_path do |f|
+  - if @question.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@question.errors.count, "error")} prohibited this question from being saved:"
+      %ul
+        - @question.errors.full_messages.each do |msg|
+          %li= msg
+  = f.label :title
+  = f.text_field :title
+  .br
+  = f.label :text
+  = f.text_area :text
+  .actions
+    = f.submit 'Save'
+
+
+= link_to 'Back', questions_path

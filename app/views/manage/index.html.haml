@@ -1,0 +1,75 @@
+%h2 My questions
+
+- if @questions.empty?
+  Empty
+- else
+  %table#questions
+    %tr
+      %th Title
+      %th Text
+      %th
+      %th
+      %th
+      %th Create_time
+      %th Solved status
+
+    - @questions.each do |question|
+      %tr
+        %td= question.title
+        %td= question.text
+        %td= link_to 'Show', question
+        %td= link_to 'Edit', edit_question_path(question)
+        %td= link_to 'Destroy', question, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= question.created_at
+        %td= question.is_solved ? "Solved" : "Not solved"
+        %td= link_to 'Solved!', solved_question_path(question), :data => { :confirm => 'Really?' } unless question.is_solved
+
+%h2 My drafts
+- if @drafts.empty?
+  Empty
+- else
+  %table#questions
+    %tr
+      %th Title
+      %th Text
+      %th
+      %th
+      %th
+      %th Create_time
+      %th Publish
+      
+
+    - @drafts.each do |question|
+      %tr
+        %td= question.title
+        %td= question.text
+        %td= link_to 'Show', question
+        %td= link_to 'Edit', edit_question_path(question)
+        %td= link_to 'Destroy', question, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= question.created_at
+        %td= link_to 'Publish!', publish_question_path(question), :data => { :confirm => 'Really?' }
+
+= link_to 'Create new draft', new_draft_questions_path
+
+%h2 My answers
+- if @answers.empty?
+  Empty
+- else
+  %table#answers
+    %tr
+      %th Text
+      %th 
+      %th
+      %th
+      %th Rating
+      %th Create_time
+
+    - @answers.each do |a, i|
+      %tr
+        %td
+          %b= a.text
+        %td= link_to 'Show', question_answer_path(a.question, a)
+        %td= link_to 'Edit', edit_question_answer_path(a.question, a) if can? :update, a
+        %td= link_to 'Destroy', question_answer_path(a.question, a), :method => :delete, :data => { :confirm => 'Are you sure?' } if a.user == current_user  if can? :delete, a
+        %td= a.rate
+        %td= a.created_at

@@ -1,0 +1,50 @@
+%p#notice= notice
+
+%h2#question-title= @question.title
+
+%h4#question-text= @question.text
+
+%h5#question-created_at= @question.created_at
+
+%h5#question-view_count= "Views count: #{@question.views}"
+
+%h5#question-rate= "Question have rating: #{@question.rate}"
+= link_to '+1', rate_up_question_path(@question)
+= link_to '-1', rate_down_question_path(@question)
+
+#create-answer_link
+  = link_to "Create answer", new_question_answer_path(@question)
+
+- if @answers
+  Answers: 
+  %br
+  %table#answers
+    %tr
+      %th Num
+      %th Text
+      %th 
+      %th
+      %th
+      %th
+      %th Rating
+      %th Create_timev
+      %th Poster
+
+    - @answers.each_with_index do |a, i|
+      %tr
+        %td= i+1
+        %td
+          %b= a.text
+        %td= link_to 'Show', question_answer_path(@question, a)
+        %td= link_to 'Edit', edit_question_answer_path(@question, a) if can? :update, a
+        %td= link_to 'Destroy', question_answer_path(@question, a), :method => :delete, :data => { :confirm => 'Are you sure?' } if a.user == current_user  if can? :delete, a
+        %td= link_to '+1', rate_up_question_answer_path(@question, a)
+        %td= a.rate
+        %td= a.created_at
+        %td= a.user.email
+
+
+%br
+= link_to 'Edit', edit_question_path(@question)
+\|
+= link_to 'Back', questions_path

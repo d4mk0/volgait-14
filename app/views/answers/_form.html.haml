@@ -1,0 +1,13 @@
+= form_for @answer, url: (@answer.new_record? ? question_answers_path(@question) : question_answer_path(@question, @answer)), method: (@answer.new_record? ? :post : :patch) do |f|
+  - if @answer.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@answer.errors.count, "error")} prohibited this answer from being saved:"
+      %ul
+        - @answer.errors.full_messages.each do |msg|
+          %li= msg
+	
+  = f.label :text
+  = f.text_area :text
+
+  .actions
+    = f.submit 'Save'

@@ -1,0 +1,8 @@
+%p#notice= notice
+
+= @answer.text
+%br
+- if can? :manage, @answer
+  = link_to 'Edit', edit_question_answer_path(@question, @answer)
+
+  = link_to 'Back', question_path(@question)

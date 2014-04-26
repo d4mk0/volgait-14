@@ -1,0 +1,34 @@
+%h1 Listing questions
+
+%table#questions
+  %tr
+    %th Title
+    %th Text
+    %th
+    %th
+    %th
+    %th
+    %th
+    %th Rating 
+    %th Views
+    %th Create_time
+    %th Poster
+
+  - @questions.each do |question|
+    %tr
+      %td= question.title
+      %td= question.text
+      %td= link_to 'Show', question
+      %td= link_to 'Edit', edit_question_path(question) if can? :update, question
+      %td= link_to 'Destroy', question, :method => :delete, :data => { :confirm => 'Are you sure?' } if can? :delete, question
+      %td= link_to '+1', rate_up_question_path(question)
+      %td= link_to '-1', rate_down_question_path(question)
+      %td= question.rate
+      %td= question.views
+      %td= question.created_at
+      %td= question.user.email
+
+/= paginate @questions 
+%br
+
+= link_to 'New Question', new_question_path
